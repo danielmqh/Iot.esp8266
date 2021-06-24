@@ -1,11 +1,11 @@
 #include <ESP8266WiFi.h>
-#define BLYNK_PRINT Serial // comment this out to disable prints and save space
+#define BLYNK_PRINT Serial 
 #include <SPI.h> 
 #include <BlynkSimpleEsp8266.h>
 #include <SimpleTimer.h>
 #include <DHT.h>
-//you should get Auth Token in The Blynk App.
-//go to the Project Settings (nut icon).
+
+
 String apiKey = "TBMU0NE6N4E3IHBK"; 
 char auth[] = "3BJLiItzfme7HMwM6aw6qIkux2-ViKTt";
 char ssid[] = "HUAWEI-2.4G-T2Xp";
@@ -19,20 +19,19 @@ WiFiClient client;
 
 SimpleTimer timer;
 
-int mq2 = A0; // smoke sensor is connected with the analog pin A0 
+int mq2 = A0; 
 int data = 0;
 
 
 void sendSensor()
 {
   float h = dht.readHumidity();
-  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  float t = dht.readTemperature(); 
   if (isnan(h) || isnan (t)){
     Serial.println("Failed to read from DHT sendor!");  
     return;
   }
-  // you can send any value at any time.
-  // please don't send more that 10 values per second.
+
   Blynk.virtualWrite(V5, h);
   Blynk.virtualWrite(V6, t);
 }
@@ -59,7 +58,7 @@ void setup()
   Serial.begin(9600);
   Blynk.begin(auth, ssid, pass);
   dht.begin();
-  //Setup a function to be called every second
+
   timer.setInterval(1000L, sendSensor);
   Serial.begin(9600);
   Blynk.begin(auth, ssid, pass);
@@ -67,8 +66,8 @@ void setup()
 }
 void loop()
 {
-  Blynk.run(); // Initiates Blynk
-  timer.run(); // Initiates SimpleTimer
+  Blynk.run(); 
+  timer.run(); 
 
 float u = dht.readHumidity();
       float t = dht.readTemperature();
@@ -109,10 +108,10 @@ float u = dht.readHumidity();
  
           Serial.println("Esperando...");
   
-  // thingspeak needs minimum 15 sec delay between updates
+
   delay(1000);
 
-  //gas
+
   float h = analogRead(A0);
 if (isnan(h))
 {
@@ -120,7 +119,7 @@ Serial.println("Falta el sensor de GAS");
 return;
 }
  
-//if (client.connect(server, 80)) // 
+
 {
 String postStr = apiKey;
 postStr += "&amp;field1=";
@@ -143,7 +142,7 @@ delay(500);
 client.stop();
 Serial.println("cargando...");
  
-// thingspeak needs minimum 15 sec delay between updates.
+
 delay(1500);
 
 }
